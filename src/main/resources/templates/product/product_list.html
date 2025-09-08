@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}"></head>
+<body>
+
+<!-- 🔹 Навбар -->
+<div th:replace="~{fragments/header :: body}"></div>
+
+<!-- Основной контейнер -->
+<div class="container flex-grow-1 mt-4">
+
+    <h2 class="text-center mb-4">СПИСОК ПРОДУКТОВ</h2>
+
+    <form method="get" th:action="@{/product/findAll}" class="d-flex mb-4">
+        <!-- Производитель -->
+        <select name="manufacturerId" class="form-select me-2">
+            <option value="" th:selected="${selectedManufacturer == null}">Все производители</option>
+            <option th:each="m : ${manufacturers}"
+                    th:value="${m.id}"
+                    th:text="${m.name}"
+                    th:selected="${selectedManufacturer != null and selectedManufacturer == m.id}">
+            </option>
+        </select>
+
+        <!-- Категория -->
+        <select name="categoryId" class="form-select me-2">
+            <option value="" th:selected="${selectedCategory == null}">Все категории</option>
+            <option th:each="c : ${categories}"
+                    th:value="${c.id}"
+                    th:text="${c.name}"
+                    th:selected="${selectedCategory != null and selectedCategory == c.id}">
+            </option>
+        </select>
+
+        <button type="submit" class="btn btn-secondary">НАЙТИ</button>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Производитель</th>
+            <th>Категория</th>
+            <th>Срок годности (дней)</th>
+            <th>Вес (кг)</th>
+            <th>Изображение</th>
+            <th>Состав</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}">
+            <td th:text="${product.name}">Конфеты Визит</td>
+            <td th:text="${product.manufacturer.name}">Бабаевский</td>
+            <td th:text="${product.category.name}">Конфеты</td>
+            <td th:text="${product.lifeDays}">100</td>
+            <td th:text="${product.weight}">1.5</td>
+            <td>
+                <img th:if="${product.imageUrl != null}"
+                     th:src="${product.imageUrl}"
+                     alt="Изображение продукта"
+                     style="max-height: 100px; border-radius: 5px;">
+            </td>
+            <td th:text="${product.composition}">Какао</td>
+            <td>
+                <a th:href="@{/product/{id}/edit(id=${product.id})}"
+                   class="btn btn-outline-dark btn-sm me-2">
+                    Редактировать
+                </a>
+                <a th:href="@{/product/{id}/delete(id=${product.id})}"
+                   class="btn btn-outline-dark btn-sm me-2">
+                    УДАЛИТЬ
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 🔹 Пагинация -->
+    <nav class="d-flex justify-content-center mt-4">
+        <ul class="pagination">
+            <!-- Предыдущая -->
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{/product/findAll(page=${currentPage - 1})}">Previous</a>
+            </li>
+
+            <!-- 🔹 Номера страниц -->
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(
+                           T(java.lang.Math).max(0, currentPage - 1),
+                           T(java.lang.Math).min(totalPages - 1, currentPage + 1)
+                       )}"
+                th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/product/findAll(page=${i})}"
+                   th:text="${i + 1}">
+                </a>
+            </li>
+
+            <!-- 🔹 Многоточие -->
+            <li class="page-item" th:if="${totalPages > 3}">
+                <span class="page-link">...</span>
+            </li>
+
+            <!-- Следующая -->
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                <a class="page-link" th:href="@{/product/findAll(page=${currentPage + 1})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

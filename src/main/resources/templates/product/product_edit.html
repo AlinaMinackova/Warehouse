@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}"></head>
+<body>
+
+<!-- 🔹 Навбар -->
+<div th:replace="~{fragments/header :: body}"></div>
+
+<div class="container flex-grow-1 mt-4">
+    <h2 class="text-center mb-4">РЕДАКТИРОВАТЬ ПРОДУКТ</h2>
+
+    <div class="form-container">
+        <form th:action="@{/product/{id}/edit(id=${product.id})}" th:object="${product}" method="post" enctype="multipart/form-data">
+            <!-- Spring Boot требует для PUT: скрытое поле -->
+            <input type="hidden" name="_method" value="put"/>
+
+            <!-- Название -->
+            <div class="mb-3">
+                <label class="form-label">Название</label>
+                <input type="text" class="form-control" th:field="*{name}" required maxlength="255"/>
+            </div>
+
+            <!-- Производитель -->
+            <div class="mb-3">
+                <label class="form-label">Производитель</label>
+                <select name="manufacturerId" class="form-control" required>
+                    <option value="" disabled>Выберите производителя</option>
+                    <option th:each="m : ${manufacturers}"
+                            th:value="${m.id}"
+                            th:text="${m.name}"
+                            th:selected="${product.manufacturer != null and product.manufacturer.id == m.id}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Категория -->
+            <div class="mb-3">
+                <label class="form-label">Категория</label>
+                <select name="categoryId" class="form-control" required>
+                    <option value="" disabled>Выберите категорию</option>
+                    <option th:each="c : ${categories}"
+                            th:value="${c.id}"
+                            th:text="${c.name}"
+                            th:selected="${product.category != null and product.category.id == c.id}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Изображение -->
+            <div class="mb-3">
+                <label class="form-label">Изображение</label>
+
+                <div th:if="${product.imageUrl != null}">
+                    <img th:src="${product.imageUrl}" alt="Текущая картинка" style="max-height: 100px; display:block; margin-bottom: 10px; border-radius:5px;">
+                    <label class="btn btn-secondary btn-sm">
+                        Изменить картинку
+                        <input type="file" name="file" class="d-none">
+                    </label>
+                </div>
+                <div th:if="${product.imageUrl == null}">
+                    <input type="file" class="form-control" name="file">
+                </div>
+            </div>
+
+            <!-- Срок годности -->
+            <div class="mb-3">
+                <label class="form-label">Срок годности (дн.)</label>
+                <input type="number" class="form-control" th:field="*{lifeDays}" min="1"/>
+            </div>
+
+            <!-- Вес -->
+            <div class="mb-3">
+                <label class="form-label">Вес (кг)</label>
+                <input type="number" step="0.01" class="form-control" th:field="*{weight}" min="0.01"/>
+            </div>
+
+            <!-- Состав -->
+            <div class="mb-3">
+                <label class="form-label">Состав</label>
+                <textarea class="form-control" th:field="*{composition}" rows="3"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

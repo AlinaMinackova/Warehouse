@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}"></head>
+<body>
+
+<!-- 🔹 Навбар -->
+<div th:replace="~{fragments/header :: body}"></div>
+<div class="container flex-grow-1 mt-4">
+    <h2 class="text-center mb-4">ДОБАВИТЬ ПЕРСОНАЛ</h2>
+
+    <div class="form-container">
+        <form th:action="@{/storekeeper/add}" th:object="${storekeeper}" method="post">
+            <!-- Название -->
+            <div class="mb-3">
+                <label class="form-label">Фамилия <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" th:field="*{lastName}">
+                <div class="text-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Имя <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" th:field="*{firstName}">
+                <div class="text-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Отчество </label>
+                <input type="text" class="form-control" th:field="*{middleName}">
+                <div class="text-danger" th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">email </label>
+                <input type="text" class="form-control" th:field="*{email}">
+                <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Дата рождения </label>
+                <input type="date" class="form-control" th:field="*{birthday}">
+                <div class="text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
+            </div>
+
+            <!-- Кнопка -->
+            <div class="text-center">
+                <button type="submit" class="btn-submit">Сохранить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

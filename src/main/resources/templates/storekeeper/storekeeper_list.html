@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}"></head>
+<body>
+
+<!-- 🔹 Навбар -->
+<div th:replace="~{fragments/header :: body}"></div>
+
+<!-- Основной контейнер -->
+<div class="container flex-grow-1 mt-4">
+
+    <h2 class="text-center mb-4">СПИСОК КЛАДОВЩИКОВ</h2>
+
+    <form class="d-flex mb-4" th:action="@{/storekeeper/findAll}" method="get">
+        <input class="form-control me-2" type="search" name="keyword"
+               placeholder="Поиск по названию или адресу"
+               th:value="${keyword}">
+        <button class="btn btn-secondary" type="submit">НАЙТИ</button>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Email</th>
+            <th>Дата рождения</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="storekeeper : ${storekeepers}">
+            <td th:text="${storekeeper.lastName}">Иванов</td>
+            <td th:text="${storekeeper.firstName}">Иван</td>
+            <td th:text="${storekeeper.middleName}">Иванович</td>
+            <td th:text="${storekeeper.email}">ivanov@mail.ru</td>
+            <td th:text="${storekeeper.birthday}">1990-01-01</td>
+            <td>
+                <a th:href="@{/storekeeper/{id}/edit(id=${storekeeper.id})}"
+                   class="btn btn-outline-dark btn-sm me-2">
+                    Редактировать
+                </a>
+                <a th:href="@{/storekeeper/{id}/delete(id=${storekeeper.id})}"
+                   class="btn btn-outline-dark btn-sm me-2">
+                    УДАЛИТЬ
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav class="d-flex justify-content-center mt-4">
+        <ul class="pagination">
+            <!-- Предыдущая -->
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <a class="page-link" th:href="@{/storekeeper/findAll(page=${currentPage - 1})}">Previous</a>
+            </li>
+
+            <!-- 🔹 Номера страниц -->
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(
+                           T(java.lang.Math).max(0, currentPage - 1),
+                           T(java.lang.Math).min(totalPages - 1, currentPage + 1)
+                       )}"
+                th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/storekeeper/findAll(page=${i})}"
+                   th:text="${i + 1}">
+                </a>
+            </li>
+
+            <!-- 🔹 Многоточие -->
+            <li class="page-item" th:if="${totalPages > 3}">
+                <span class="page-link">...</span>
+            </li>
+
+            <!-- Следующая -->
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                <a class="page-link" th:href="@{/storekeeper/findAll(page=${currentPage + 1})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: head}"></head>
+<body>
+
+<!-- 🔹 Навбар -->
+<div th:replace="~{fragments/header :: body}"></div>
+<div class="container flex-grow-1 mt-4">
+    <h2 class="text-center mb-4">ДОБАВИТЬ СКЛАД</h2>
+
+    <div class="form-container">
+        <form th:action="@{/warehouse/add}" th:object="${warehouse}" method="post">
+            <!-- Название -->
+            <div class="mb-3">
+                <label class="form-label">Название <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" th:field="*{name}" placeholder="Склад Юг">
+                <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Адрес <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" th:field="*{address}" placeholder="Склад Юг">
+                <div class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+            </div>
+
+            <!-- Кнопка -->
+            <div class="text-center">
+                <button type="submit" class="btn-submit">Сохранить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>
