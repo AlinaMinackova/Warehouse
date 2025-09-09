@@ -34,9 +34,8 @@ public class WarehouseController {
         }
 
         model.addAttribute("warehouses", warehousesPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", warehousesPage.getTotalPages());
-        model.addAttribute("keyword", keyword); // чтобы в input осталось значение поиска
+        model.addAttribute("pag", warehousesPage);
+        model.addAttribute("keyword", keyword);
 
         return "/warehouse/warehouse_list";
     }

@@ -44,8 +44,7 @@ public class ProductController {
         Page<Product> productPage = productService.filterProducts(manufacturerId, categoryId, page, size);
 
         model.addAttribute("products", productPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("pag", productPage);
 
         // для выпадающих списков
         model.addAttribute("manufacturers", manufacturerService.findAll());

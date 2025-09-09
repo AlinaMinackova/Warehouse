@@ -63,35 +63,50 @@
 
 
     <!-- Пагинация -->
-    <nav class="d-flex justify-content-center mt-4">
-        <ul class="pagination">
-            <!-- Предыдущая -->
-            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                <a class="page-link" th:href="@{/warehouse/findAll(page=${currentPage - 1})}">Previous</a>
-            </li>
+    <nav th:if="${pag != null and pag.totalPages > 1}" aria-label="Page navigation">
+        <ul class="pagination justify-content-center mt-4">
 
-            <!-- 🔹 Номера страниц -->
-            <li class="page-item"
-                th:each="i : ${#numbers.sequence(
-                           T(java.lang.Math).max(0, currentPage - 1),
-                           T(java.lang.Math).min(totalPages - 1, currentPage + 1)
-                       )}"
-                th:classappend="${i == currentPage} ? 'active'">
+            <!-- Кнопка "назад" -->
+            <li th:classappend="${pag.first} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/warehouse/findAll(page=${i})}"
-                   th:text="${i + 1}">
-                </a>
+                   th:href="@{/warehouse/findAll(page=${pag.number - 1}, size=${pag.size})}">‹</a>
             </li>
 
-            <!-- 🔹 Многоточие -->
-            <li class="page-item" th:if="${totalPages > 3}">
+            <!-- Всегда первая страница -->
+            <li th:if="${pag.number > 2}">
+                <a class="page-link" th:href="@{/warehouse/findAll(page=0, size=${pag.size})}">1</a>
+            </li>
+            <li th:if="${pag.number > 3}">
                 <span class="page-link">...</span>
             </li>
 
-            <!-- Следующая -->
-            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                <a class="page-link" th:href="@{/warehouse/findAll(page=${currentPage + 1})}">Next</a>
+            <!-- Страницы вокруг текущей -->
+            <li th:each="i : ${#numbers.sequence(pag.number-2 > 0 ? pag.number-2 : 0,
+                                             pag.number+2 < pag.totalPages-1 ? pag.number+2 : pag.totalPages-1)}"
+                th:classappend="${i == pag.number} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/warehouse/findAll(page=${i}, size=${pag.size})}"
+                   th:text="${i+1}"></a>
             </li>
+
+            <!-- Троеточие перед последней страницей -->
+            <li th:if="${pag.number < pag.totalPages-4}">
+                <span class="page-link">...</span>
+            </li>
+
+            <!-- Последняя страница -->
+            <li th:if="${pag.number < pag.totalPages-3}">
+                <a class="page-link"
+                   th:href="@{/warehouse/findAll(page=${pag.totalPages-1}, size=${pag.size})}"
+                   th:text="${pag.totalPages}"></a>
+            </li>
+
+            <!-- Кнопка "вперёд" -->
+            <li th:classappend="${pag.last} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/warehouse/findAll(page=${pag.number + 1}, size=${pag.size})}">›</a>
+            </li>
+
         </ul>
     </nav>
 </div>

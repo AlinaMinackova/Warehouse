@@ -33,8 +33,8 @@ public class ManufacturerController {
             manufacturerPage = manufacturerService.findAll(page, size);
         }
         model.addAttribute("manufacturers", manufacturerPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", manufacturerPage.getTotalPages());
+        model.addAttribute("pag", manufacturerPage);
+        model.addAttribute("keyword", keyword);
         return "manufacturer/manufacturer_list";
     }
 

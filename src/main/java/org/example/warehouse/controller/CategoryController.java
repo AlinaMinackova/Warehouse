@@ -36,6 +36,7 @@ public class CategoryController {
         }
         model.addAttribute("categories", categoryPage.getContent());
         model.addAttribute("pag", categoryPage);
+        model.addAttribute("keyword", keyword);
         return "category/category_list";
     }
 

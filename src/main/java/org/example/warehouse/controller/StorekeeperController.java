@@ -35,8 +35,8 @@ public class StorekeeperController {
             storekeeperPage = storekeeperService.findAll(page, size);
         }
         model.addAttribute("storekeepers", storekeeperPage.getContent());
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", storekeeperPage.getTotalPages());
+        model.addAttribute("pag", storekeeperPage);
+        model.addAttribute("keyword", keyword);
         return "storekeeper/storekeeper_list";
     }
 
