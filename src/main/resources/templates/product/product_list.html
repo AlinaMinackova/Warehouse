@@ -35,46 +35,50 @@
         <button type="submit" class="btn btn-secondary">НАЙТИ</button>
     </form>
 
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th>Название</th>
-            <th>Производитель</th>
-            <th>Категория</th>
-            <th>Срок годности (дней)</th>
-            <th>Вес (кг)</th>
-            <th>Изображение</th>
-            <th>Состав</th>
-            <th>Действия</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="product : ${products}">
-            <td th:text="${product.name}">Конфеты Визит</td>
-            <td th:text="${product.manufacturer.name}">Бабаевский</td>
-            <td th:text="${product.category.name}">Конфеты</td>
-            <td th:text="${product.lifeDays}">100</td>
-            <td th:text="${product.weight}">1.5</td>
-            <td>
+    <div class="row">
+        <div class="col-md-3 mb-4" th:each="product : ${products}">
+            <div class="card card-custom p-3 h-100">
+
+                <!-- Изображение -->
                 <img th:if="${product.imageUrl != null}"
                      th:src="${product.imageUrl}"
                      alt="Изображение продукта"
-                     style="max-height: 100px; border-radius: 5px;">
-            </td>
-            <td th:text="${product.composition}">Какао</td>
-            <td>
-                <a th:href="@{/product/{id}/edit(id=${product.id})}"
-                   class="btn btn-outline-dark btn-sm me-2">
-                    Редактировать
-                </a>
-                <a th:href="@{/product/{id}/delete(id=${product.id})}"
-                   class="btn btn-outline-dark btn-sm me-2">
-                    УДАЛИТЬ
-                </a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                     class="mb-3"
+                     style="max-height: 120px; object-fit: contain; border-radius: 5px;">
+
+                <!-- Название -->
+                <p><b>Название:</b> <span th:text="${product.name}">Конфеты Визит</span></p>
+
+                <!-- Производитель -->
+                <p><b>Производитель:</b> <span th:text="${product.manufacturer.name}">Бабаевский</span></p>
+
+                <!-- Категория -->
+                <p><b>Категория:</b> <span th:text="${product.category.name}">Конфеты</span></p>
+
+                <!-- Срок годности -->
+                <p><b>Срок годности (дней):</b> <span th:text="${product.lifeDays}">100</span></p>
+
+                <!-- Вес -->
+                <p><b>Вес (г):</b> <span th:text="${product.weight}">150</span></p>
+
+                <!-- Состав -->
+                <p><b>Состав:</b> <span th:text="${product.composition}">Какао</span></p>
+
+                <!-- Действия -->
+                <div class="mt-auto">
+                    <a th:href="@{/product/{id}/edit(id=${product.id})}"
+                       class="btn btn-outline-dark btn-sm me-2">
+                        РЕДАКТИРОВАТЬ
+                    </a>
+                    <a th:href="@{/product/{id}/delete(id=${product.id})}"
+                       class="btn btn-outline-secondary btn-sm">
+                        УДАЛИТЬ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- 🔹 Пагинация -->
     <nav th:if="${pag != null and pag.totalPages > 1}" aria-label="Page navigation">

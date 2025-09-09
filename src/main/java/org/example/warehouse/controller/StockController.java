@@ -30,7 +30,7 @@ public class StockController {
     // список продуктов
     @GetMapping("/findAll")
     public String list(@RequestParam(defaultValue = "0") int page,
-                       @RequestParam(defaultValue = "10") int size,
+                       @RequestParam(defaultValue = "12") int size,
                        @RequestParam(required = false) Long warehouseId,
                        @RequestParam(required = false) Long productId,
                        @RequestParam(defaultValue = "desc") String sort,
@@ -110,11 +110,11 @@ public class StockController {
         stockService.update(id, stock, warehouse, product, storekeeper);
         return "redirect:/stock/findAll";
     }
-//
-//    // удаление
-//    @GetMapping("/{id}/delete")
-//    public String delete(@PathVariable Long id) {
-//        productService.delete(id);
-//        return "redirect:/product/findAll";
-//    }
+
+    // удаление
+    @GetMapping("/{id}/delete")
+    public String delete(@PathVariable Long id) {
+        stockService.delete(id);
+        return "redirect:/stock/findAll";
+    }
 }

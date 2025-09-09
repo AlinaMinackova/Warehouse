@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -17,35 +19,40 @@ public class CategoryService {
 
     public final CategoryRepository categoryRepository;
 
+    @Transactional()
     public void save(Category category) {
         categoryRepository.save(category);
     }
 
+    @Transactional(readOnly = true)
     public Page<Category> findAll(int page, int size) {
         return categoryRepository.findAll(PageRequest.of(page, size));
     }
 
-
+    @Transactional(readOnly = true)
     public Page<Category> search(String keyword, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return categoryRepository.findByNameContainingIgnoreCase(keyword, pageable);
     }
 
+    @Transactional(readOnly = true)
     public List<Category> findAll() {
         return categoryRepository.findAll();
     }
 
-
+    @Transactional(readOnly = true)
     public Category findById(Long id) {
         return categoryRepository.findById(id).orElse(null);
     }
 
+    @Transactional()
     public Category update(Long id, Category updated) {
         Category existing = findById(id);
         existing.setName(updated.getName());
         return categoryRepository.save(existing);
     }
 
+    @Transactional()
     public void delete(Long id) {
         categoryRepository.deleteById(id);
     }

@@ -16,13 +16,13 @@
 
             <!-- Название -->
             <div class="mb-3">
-                <label class="form-label">Название</label>
+                <label class="form-label">Название <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" th:field="*{name}" required maxlength="255"/>
             </div>
 
             <!-- Производитель -->
             <div class="mb-3">
-                <label class="form-label">Производитель</label>
+                <label class="form-label">Производитель <span class="text-danger">*</span></label>
                 <select name="manufacturerId" class="form-control" required>
                     <option value="" disabled>Выберите производителя</option>
                     <option th:each="m : ${manufacturers}"
@@ -35,7 +35,7 @@
 
             <!-- Категория -->
             <div class="mb-3">
-                <label class="form-label">Категория</label>
+                <label class="form-label">Категория <span class="text-danger">*</span></label>
                 <select name="categoryId" class="form-control" required>
                     <option value="" disabled>Выберите категорию</option>
                     <option th:each="c : ${categories}"
@@ -47,30 +47,73 @@
             </div>
 
             <!-- Изображение -->
-            <div class="mb-3">
-                <label class="form-label">Изображение</label>
+<!--            <div class="mb-3">-->
+<!--                <label class="form-label">Изображение</label>-->
 
-                <div th:if="${product.imageUrl != null}">
-                    <img th:src="${product.imageUrl}" alt="Текущая картинка" style="max-height: 100px; display:block; margin-bottom: 10px; border-radius:5px;">
-                    <label class="btn btn-secondary btn-sm">
-                        Изменить картинку
-                        <input type="file" name="file" class="d-none">
-                    </label>
+<!--                <div th:if="${product.imageUrl != null}">-->
+<!--                    <img th:src="${product.imageUrl}" alt="Текущая картинка" style="max-height: 100px; display:block; margin-bottom: 10px; border-radius:5px;">-->
+<!--                    <label class="btn btn-secondary btn-sm">-->
+<!--                        Изменить картинку-->
+<!--                        <input type="file" name="file" class="d-none">-->
+<!--                    </label>-->
+<!--                </div>-->
+<!--                <div th:if="${product.imageUrl == null}">-->
+<!--                    <input type="file" class="form-control" name="file">-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Фото</label>
+
+                <!-- Текущее фото -->
+                <div class="mb-2" th:if="${product.imageUrl != null}">
+                    <img id="currentImage"
+                         th:src="${product.imageUrl}"
+                         alt="Фото товара"
+                         class="img-thumbnail"
+                         style="max-width: 200px; max-height: 200px;">
                 </div>
-                <div th:if="${product.imageUrl == null}">
-                    <input type="file" class="form-control" name="file">
-                </div>
+
+                <!-- Выбор нового фото -->
+                <input class="form-control" type="file" id="imageInput" name="file">
             </div>
+
+            <!-- ?? JS для замены фото -->
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const input = document.getElementById("imageInput");
+                    const currentImage = document.getElementById("currentImage");
+
+                    input.addEventListener("change", () => {
+                        const file = input.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = e => {
+                                currentImage.src = e.target.result; // заменяем картинку
+                                currentImage.style.display = "block"; // на случай если раньше фото не было
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                });
+            </script>
+
+
+
+
 
             <!-- Срок годности -->
             <div class="mb-3">
-                <label class="form-label">Срок годности (дн.)</label>
+                <label class="form-label">Срок годности (дн.) <span class="text-danger">*</span></label>
                 <input type="number" class="form-control" th:field="*{lifeDays}" min="1"/>
             </div>
 
             <!-- Вес -->
             <div class="mb-3">
-                <label class="form-label">Вес (кг)</label>
+                <label class="form-label">Вес (кг) <span class="text-danger">*</span></label>
                 <input type="number" step="0.01" class="form-control" th:field="*{weight}" min="0.01"/>
             </div>
 

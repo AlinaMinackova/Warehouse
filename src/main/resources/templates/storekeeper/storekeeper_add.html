@@ -30,13 +30,13 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label">email </label>
+                <label class="form-label">email <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" th:field="*{email}">
                 <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Дата рождения </label>
+                <label class="form-label">Дата рождения <span class="text-danger">*</span></label>
                 <input type="date" class="form-control" th:field="*{birthday}">
                 <div class="text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
             </div>

@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -21,10 +22,12 @@ import java.util.Objects;
 public class StockService {
     public final StockRepository stockRepository;
 
+    @Transactional(readOnly = true)
     public Page<Stock> findAll(int page, int size) {
         return stockRepository.findAll(PageRequest.of(page, size));
     }
 
+    @Transactional(readOnly = true)
     public Page<Stock> filterProducts(Long warehouseId, Long productId, int page, int size, String sort) {
         Sort.Direction direction = sort.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, "arrivalDate"));
@@ -40,6 +43,7 @@ public class StockService {
         }
     }
 
+    @Transactional()
     public void save(Stock stock, Warehouse warehouse, Product product, Storekeeper storekeeper) {
         stock.setWarehouse(warehouse);
         stock.setProduct(product);
@@ -48,10 +52,12 @@ public class StockService {
     }
 
 
+    @Transactional(readOnly = true)
     public Stock findById(Long id) {
         return stockRepository.findById(id).orElse(null);
     }
 
+    @Transactional()
     public void update(Long id, Stock stock, Warehouse warehouse, Product product, Storekeeper storekeeper) {
         Stock existingStock = findById(id);
 
@@ -69,6 +75,7 @@ public class StockService {
         stockRepository.save(existingStock);
     }
 
+    @Transactional()
     public void delete(Long id) {
         stockRepository.deleteById(id);
     }

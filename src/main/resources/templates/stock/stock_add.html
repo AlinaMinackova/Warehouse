@@ -12,7 +12,7 @@
 
             <!-- Склад -->
             <div class="mb-3">
-                <label class="form-label">Склад</label>
+                <label class="form-label">Склад <span class="text-danger">*</span></label>
                 <select name="warehouseId" class="form-control" required>
                     <option value="" disabled selected>Выберите склад</option>
                     <option th:each="w : ${warehouses}"
@@ -23,7 +23,7 @@
 
             <!-- Продукт -->
             <div class="mb-3">
-                <label class="form-label">Продукт</label>
+                <label class="form-label">Продукт <span class="text-danger">*</span></label>
                 <select name="productId" class="form-control" required>
                     <option value="" disabled selected>Выберите продукт</option>
                     <option th:each="p : ${products}"
@@ -34,19 +34,19 @@
 
             <!-- Количество -->
             <div class="mb-3">
-                <label class="form-label">Количество</label>
+                <label class="form-label">Количество <span class="text-danger">*</span></label>
                 <input type="number" class="form-control" th:field="*{quantity}" min="1" required/>
             </div>
 
             <!-- Дата прихода -->
             <div class="mb-3">
-                <label class="form-label">Дата и время прихода</label>
+                <label class="form-label">Дата и время прихода <span class="text-danger">*</span></label>
                 <input type="datetime-local" class="form-control" name="arrivalDate">
             </div>
 
             <!-- Кладовщик -->
             <div class="mb-3">
-                <label class="form-label">Кладовщик</label>
+                <label class="form-label">Кладовщик <span class="text-danger">*</span></label>
                 <select name="storekeeperId" class="form-control" required>
                     <option value="" disabled selected>Выберите кладовщика</option>
                     <option th:each="s : ${storekeepers}"
