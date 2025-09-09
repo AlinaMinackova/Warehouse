@@ -5,6 +5,9 @@ import org.example.warehouse.entity.*;
 import org.example.warehouse.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +30,13 @@ public class StockController {
     // список продуктов
     @GetMapping("/findAll")
     public String list(@RequestParam(defaultValue = "0") int page,
-                       @RequestParam(defaultValue = "5") int size,
+                       @RequestParam(defaultValue = "10") int size,
                        @RequestParam(required = false) Long warehouseId,
                        @RequestParam(required = false) Long productId,
+                       @RequestParam(defaultValue = "desc") String sort,
                        Model model) {
 
-        Page<Stock> stockPage = stockService.filterProducts(warehouseId, productId, page, size);
+        Page<Stock> stockPage = stockService.filterProducts(warehouseId, productId, page, size, sort);
 
         model.addAttribute("stocks", stockPage.getContent());
         model.addAttribute("pag", stockPage);
@@ -44,6 +48,7 @@ public class StockController {
         // чтобы сохранять выбранные фильтры
         model.addAttribute("selectedWarehouse", warehouseId);
         model.addAttribute("selectedProduct", productId);
+        model.addAttribute("selectedSort", sort);
 
 
         return "stock/stock_list";

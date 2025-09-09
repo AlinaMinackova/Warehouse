@@ -31,6 +31,11 @@
             </option>
         </select>
 
+        <select name="sort" class="form-select me-2">
+            <option value="desc" th:selected="${selectedSort == 'desc'}">Сначала новые</option>
+            <option value="asc" th:selected="${selectedSort == 'asc'}">Сначала старые</option>
+        </select>
+
         <button type="submit" class="btn btn-secondary">НАЙТИ</button>
     </form>
 

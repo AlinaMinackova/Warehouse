@@ -7,6 +7,7 @@ import org.example.warehouse.repository.StockRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,8 +25,9 @@ public class StockService {
         return stockRepository.findAll(PageRequest.of(page, size));
     }
 
-    public Page<Stock> filterProducts(Long warehouseId, Long productId, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<Stock> filterProducts(Long warehouseId, Long productId, int page, int size, String sort) {
+        Sort.Direction direction = sort.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, "arrivalDate"));
 
         if (warehouseId != null && productId != null) {
             return stockRepository.findByWarehouse_IdAndProduct_Id(warehouseId, productId, pageable);

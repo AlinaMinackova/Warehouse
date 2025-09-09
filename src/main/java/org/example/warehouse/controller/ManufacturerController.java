@@ -23,7 +23,7 @@ public class ManufacturerController {
 
     @GetMapping("/findAll")
     public String findAll(@RequestParam(defaultValue = "0") int page,
-                          @RequestParam(defaultValue = "5") int size,
+                          @RequestParam(defaultValue = "10") int size,
                           @RequestParam(required = false) String keyword,
                           Model model) {
         Page<Manufacturer> manufacturerPage;
