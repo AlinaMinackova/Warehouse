@@ -42,12 +42,12 @@
             <!-- Кнопка "назад" -->
             <li th:classappend="${pag.first} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/category/findAll(page=${pag.number - 1}, size=${pag.size})}">‹</a>
+                   th:href="@{/category/findAll(page=${pag.number - 1}, size=${pag.size}, keyword=${keyword})}">‹</a>
             </li>
 
             <!-- Всегда первая страница -->
             <li th:if="${pag.number > 2}">
-                <a class="page-link" th:href="@{/category/findAll(page=0, size=${pag.size})}">1</a>
+                <a class="page-link" th:href="@{/category/findAll(page=0, size=${pag.size}, keyword=${keyword})}">1</a>
             </li>
             <li th:if="${pag.number > 3}">
                 <span class="page-link">...</span>
@@ -58,7 +58,7 @@
                                              pag.number+2 < pag.totalPages-1 ? pag.number+2 : pag.totalPages-1)}"
                 th:classappend="${i == pag.number} ? 'active'">
                 <a class="page-link"
-                   th:href="@{/category/findAll(page=${i}, size=${pag.size})}"
+                   th:href="@{/category/findAll(page=${i}, size=${pag.size}, keyword=${keyword})}"
                    th:text="${i+1}"></a>
             </li>
 
@@ -70,14 +70,14 @@
             <!-- Последняя страница -->
             <li th:if="${pag.number < pag.totalPages-3}">
                 <a class="page-link"
-                   th:href="@{/category/findAll(page=${pag.totalPages-1}, size=${pag.size})}"
+                   th:href="@{/category/findAll(page=${pag.totalPages-1}, size=${pag.size}, keyword=${keyword})}"
                    th:text="${pag.totalPages}"></a>
             </li>
 
             <!-- Кнопка "вперёд" -->
             <li th:classappend="${pag.last} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/category/findAll(page=${pag.number + 1}, size=${pag.size})}">›</a>
+                   th:href="@{/category/findAll(page=${pag.number + 1}, size=${pag.size}, keyword=${keyword})}">›</a>
             </li>
 
         </ul>

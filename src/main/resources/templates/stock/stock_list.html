@@ -84,19 +84,19 @@
         </div>
     </div>
 
-    <!-- 🔹 Пагинация -->
+    <!-- Пагинация -->
     <nav th:if="${pag != null and pag.totalPages > 1}" aria-label="Page navigation">
         <ul class="pagination justify-content-center mt-4">
 
             <!-- Кнопка "назад" -->
             <li th:classappend="${pag.first} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/stock/findAll(page=${pag.number - 1}, size=${pag.size})}">‹</a>
+                   th:href="@{/stock/findAll(page=${pag.number - 1}, size=${pag.size}, warehouseId=${selectedWarehouse}, productId=${selectedProduct}, sort=${selectedSort})}">‹</a>
             </li>
 
             <!-- Всегда первая страница -->
             <li th:if="${pag.number > 2}">
-                <a class="page-link" th:href="@{/stock/findAll(page=0, size=${pag.size})}">1</a>
+                <a class="page-link" th:href="@{/stock/findAll(page=0, size=${pag.size}, warehouseId=${selectedWarehouse}, productId=${selectedProduct}, sort=${selectedSort})}">1</a>
             </li>
             <li th:if="${pag.number > 3}">
                 <span class="page-link">...</span>
@@ -107,7 +107,7 @@
                                              pag.number+2 < pag.totalPages-1 ? pag.number+2 : pag.totalPages-1)}"
                 th:classappend="${i == pag.number} ? 'active'">
                 <a class="page-link"
-                   th:href="@{/stock/findAll(page=${i}, size=${pag.size})}"
+                   th:href="@{/stock/findAll(page=${i}, size=${pag.size}, warehouseId=${selectedWarehouse}, productId=${selectedProduct}, sort=${selectedSort})}"
                    th:text="${i+1}"></a>
             </li>
 
@@ -119,14 +119,14 @@
             <!-- Последняя страница -->
             <li th:if="${pag.number < pag.totalPages-3}">
                 <a class="page-link"
-                   th:href="@{/stock/findAll(page=${pag.totalPages-1}, size=${pag.size})}"
+                   th:href="@{/stock/findAll(page=${pag.totalPages-1}, size=${pag.size}, warehouseId=${selectedWarehouse}, productId=${selectedProduct}, sort=${selectedSort})}"
                    th:text="${pag.totalPages}"></a>
             </li>
 
             <!-- Кнопка "вперёд" -->
             <li th:classappend="${pag.last} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/stock/findAll(page=${pag.number + 1}, size=${pag.size})}">›</a>
+                   th:href="@{/stock/findAll(page=${pag.number + 1}, size=${pag.size}, warehouseId=${selectedWarehouse}, productId=${selectedProduct}, sort=${selectedSort})}">›</a>
             </li>
 
         </ul>

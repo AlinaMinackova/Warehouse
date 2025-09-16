@@ -4,6 +4,8 @@ package org.example.warehouse.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -28,6 +30,7 @@ public class Stock {
     @Column(nullable = false)
     private Integer quantity;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "arrival_date", nullable = false)
     private LocalDateTime arrivalDate = LocalDateTime.now();
 
