@@ -44,10 +44,7 @@ public class StockService {
     }
 
     @Transactional()
-    public void save(Stock stock, Warehouse warehouse, Product product, Storekeeper storekeeper) {
-        stock.setWarehouse(warehouse);
-        stock.setProduct(product);
-        stock.setStorekeeper(storekeeper);
+    public void save(Stock stock) {
         stockRepository.save(stock);
     }
 
@@ -58,13 +55,10 @@ public class StockService {
     }
 
     @Transactional()
-    public void update(Long id, Stock stock, Warehouse warehouse, Product product, Storekeeper storekeeper) {
+    public void update(Long id, Stock stock) {
         Stock existingStock = findById(id);
 
-        existingStock.setWarehouse(warehouse);
-        existingStock.setProduct(product);
         existingStock.setQuantity(stock.getQuantity());
-        existingStock.setStorekeeper(storekeeper);
         if (stock.getArrivalDate() == null){
             existingStock.setArrivalDate(existingStock.getArrivalDate());
         }

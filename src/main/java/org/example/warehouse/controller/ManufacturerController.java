@@ -1,5 +1,6 @@
 package org.example.warehouse.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.warehouse.entity.Manufacturer;
 import org.example.warehouse.entity.Warehouse;
@@ -45,7 +46,7 @@ public class ManufacturerController {
     }
 
     @PostMapping("/add")
-    public String addManufacturer(@ModelAttribute Manufacturer manufacturer, BindingResult result) {
+    public String addManufacturer(@Valid @ModelAttribute Manufacturer manufacturer, BindingResult result) {
         if (result.hasErrors()) {
             return "/manufacturer/manufacturer_add";
         }
@@ -63,7 +64,10 @@ public class ManufacturerController {
 
     // Обновление (PUT)
     @PostMapping("/{id}/edit")
-    public String update(@PathVariable Long id, @ModelAttribute Manufacturer manufacturer) {
+    public String update(@PathVariable Long id, @Valid @ModelAttribute Manufacturer manufacturer, BindingResult result) {
+        if (result.hasErrors()) {
+            return "/manufacturer/manufacturer_edit";
+        }
         manufacturerService.update(id, manufacturer);
         return "redirect:/manufacturer/findAll";
     }

@@ -3,18 +3,19 @@
 <head th:replace="~{fragments/header :: head}"></head>
 <body>
 
-<!-- 🔹 Навбар -->
 <div th:replace="~{fragments/header :: body}"></div>
+
 <div class="container flex-grow-1 mt-4">
     <h2 class="text-center mb-4">ДОБАВИТЬ КАТЕГОРИЮ</h2>
 
     <div class="form-container">
         <form th:action="@{/category/add}" th:object="${category}" method="post">
+
             <!-- Название -->
             <div class="mb-3">
                 <label class="form-label">Название <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" th:field="*{name}">
-                <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                <div class="text-danger"  th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
             </div>
 
             <!-- Кнопка -->

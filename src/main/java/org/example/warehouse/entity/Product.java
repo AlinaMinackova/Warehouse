@@ -1,10 +1,7 @@
 package org.example.warehouse.entity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
-import jakarta.validation.constraints.NotBlank;
 
 import java.math.BigDecimal;
 
@@ -17,29 +14,33 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(max = 255)
+    @NotBlank(message = "Название продукта обязательно")
+    @Size(max = 255, message = "Название продукта не должно превышать 255 символов")
+    @Column(nullable = false, length = 255)
     private String name;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "manufacturer_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_product_manufacturer"))
     private Manufacturer manufacturer;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false,
             foreignKey = @ForeignKey(name = "fk_product_category"))
     private Category category;
 
-    @Size(max = 500)
+    @Size(max = 500, message = "URL изображения не должен превышать 500 символов")
     private String imageUrl;
 
-    @Positive
+    @NotNull(message = "Срок годности обязателен")
+    @Positive(message = "Срок годности должен быть больше 0")
     private Integer lifeDays;
 
-    @Positive
-    @Digits(integer = 8, fraction = 2)
+    @NotNull(message = "Вес обязателен")
+    @Positive(message = "Вес должен быть больше 0")
+    @Digits(integer = 8, fraction = 2, message = "Вес должен быть числом с максимум 8 целыми и 2 дробными знаками")
     private BigDecimal weight;
 
+    @Size(max = 2000, message = "Состав не должен превышать 2000 символов")
     private String composition;
 }

@@ -29,7 +29,7 @@
                 <div class="text-danger" th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}"></div>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3" th:classappend="${#fields.hasErrors('email')} ? 'has-error'">
                 <label class="form-label">email <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" th:field="*{email}">
                 <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>

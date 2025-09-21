@@ -6,7 +6,7 @@
 <!-- 🔹 Навбар -->
 <div th:replace="~{fragments/header :: body}"></div>
 <div class="container flex-grow-1 mt-4">
-  <h2 class="text-center mb-4">РЕДАКТИРОВАТЬ КАТЕГОРИЮ</h2>
+  <h2 class="text-center mb-4">РЕДАКТИРОВАТЬ ПЕРСОНАЛ</h2>
 
   <div class="form-container">
     <form th:action="@{'/storekeeper/' + ${storekeeper.id} + '/edit'}" th:object="${storekeeper}"

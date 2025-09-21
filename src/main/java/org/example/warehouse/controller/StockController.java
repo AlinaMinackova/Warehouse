@@ -1,5 +1,6 @@
 package org.example.warehouse.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.warehouse.entity.*;
 import org.example.warehouse.service.*;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,18 +68,37 @@ public class StockController {
 
 //     сохранение нового продукта
     @PostMapping("/add")
-    public String create(@ModelAttribute Stock stock,
+    public String create(@Valid @ModelAttribute Stock stock,
+                         BindingResult result,
                          @RequestParam Long warehouseId,
                          @RequestParam Long productId,
-                         @RequestParam Long storekeeperId) {
+                         @RequestParam Long storekeeperId,
+                         Model model) {
 
-        Warehouse warehouse = warehouseService.findById(warehouseId);
-        Product product = productService.findById(productId);
-        Storekeeper storekeeper = storekeeperService.findById(storekeeperId);
+        if (warehouseId == null) {
+            result.rejectValue("warehouse", "NotNull", "Выберите склад");
+        }
+        if (productId == null) {
+            result.rejectValue("product", "NotNull", "Выберите продукт");
+        }
+        if (storekeeperId == null) {
+            result.rejectValue("storekeeper", "NotNull", "Выберите кладовщика");
+        }
 
-        stockService.save(stock, warehouse, product, storekeeper);
+        stock.setWarehouse(warehouseService.findById(warehouseId));
+        stock.setProduct(productService.findById(productId));
+        stock.setStorekeeper(storekeeperService.findById(storekeeperId));
+
+        if (result.hasErrors()) {
+            model.addAttribute("stock", stock);
+            model.addAttribute("warehouses", warehouseService.findAll());
+            model.addAttribute("products", productService.findAll());
+            model.addAttribute("storekeepers", storekeeperService.findAll());
+            return "stock/stock_add";
+        }
+
+        stockService.save(stock);
         return "redirect:/stock/findAll";
-
 
     }
 //
@@ -96,18 +117,37 @@ public class StockController {
 // Обновление продукта
     @PostMapping("/{id}/edit")
     public String update(@PathVariable Long id,
-                         @ModelAttribute Stock stock,
+                         @Valid @ModelAttribute Stock stock,
+                         BindingResult result,
                          @RequestParam Long warehouseId,
                          @RequestParam Long productId,
-                         @RequestParam Long storekeeperId) {
+                         @RequestParam Long storekeeperId,
+                         Model model) {
+
+        if (warehouseId == null) {
+            result.rejectValue("warehouse", "NotNull", "Выберите склад");
+        }
+        if (productId == null) {
+            result.rejectValue("product", "NotNull", "Выберите продукт");
+        }
+        if (storekeeperId == null) {
+            result.rejectValue("storekeeper", "NotNull", "Выберите кладовщика");
+        }
+
+        stock.setWarehouse(warehouseService.findById(warehouseId));
+        stock.setProduct(productService.findById(productId));
+        stock.setStorekeeper(storekeeperService.findById(storekeeperId));
 
 
-        // Обновляем производителя и категорию
-        Warehouse warehouse = warehouseService.findById(warehouseId);
-        Product product = productService.findById(productId);
-        Storekeeper storekeeper = storekeeperService.findById(storekeeperId);
+        if (result.hasErrors()) {
+            model.addAttribute("stock", stock);
+            model.addAttribute("warehouses", warehouseService.findAll());
+            model.addAttribute("products", productService.findAll());
+            model.addAttribute("storekeepers", storekeeperService.findAll());
+            return "stock/stock_edit";
+        }
 
-        stockService.update(id, stock, warehouse, product, storekeeper);
+        stockService.update(id, stock);
         return "redirect:/stock/findAll";
     }
 

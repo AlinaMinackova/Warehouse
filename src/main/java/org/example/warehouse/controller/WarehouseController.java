@@ -1,5 +1,6 @@
 package org.example.warehouse.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.warehouse.entity.Warehouse;
 import org.example.warehouse.service.WarehouseService;
@@ -47,7 +48,7 @@ public class WarehouseController {
     }
 
     @PostMapping("/add")
-    public String addManufacturer(@ModelAttribute Warehouse warehouse, BindingResult result) {
+    public String addManufacturer(@Valid @ModelAttribute Warehouse warehouse, BindingResult result) {
         if (result.hasErrors()) {
             return "/warehouse/warehouse_add";
         }
@@ -65,7 +66,10 @@ public class WarehouseController {
 
     // Обновление (PUT)
     @PostMapping("/{id}/edit")
-    public String update(@PathVariable Long id, @ModelAttribute Warehouse warehouse) {
+    public String update(@PathVariable Long id, @Valid @ModelAttribute Warehouse warehouse, BindingResult result) {
+        if (result.hasErrors()) {
+            return "/warehouse/warehouse_edit";
+        }
         warehouseService.update(id, warehouse);
         return "redirect:/warehouse/findAll";
     }

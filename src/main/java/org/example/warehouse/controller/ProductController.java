@@ -1,5 +1,6 @@
 package org.example.warehouse.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.warehouse.entity.Category;
 import org.example.warehouse.entity.Manufacturer;
@@ -68,15 +69,30 @@ public class ProductController {
 
     // сохранение нового продукта
     @PostMapping("/add")
-    public String create(@ModelAttribute Product product,
+    public String create(@Valid @ModelAttribute Product product,
+                         BindingResult result,
                          @RequestParam Long manufacturerId,
                          @RequestParam Long categoryId,
-                         @RequestParam("file") MultipartFile file) throws IOException {
+                         @RequestParam("file") MultipartFile file, Model model) throws IOException {
 
-        Manufacturer manufacturer = manufacturerService.findById(manufacturerId);
-        Category category = categoryService.findById(categoryId);
+        if (manufacturerId == null) {
+            result.rejectValue("manufacturer", "NotNull", "Выберите производителя");
+        }
+        if (categoryId == null) {
+            result.rejectValue("category", "NotNull", "Выберите категорию");
+        }
 
-        productService.save(product, manufacturer, category, file);
+        product.setManufacturer(manufacturerService.findById(manufacturerId));
+        product.setCategory(categoryService.findById(categoryId));
+
+        if (result.hasErrors()) {
+            model.addAttribute("product", product);
+            model.addAttribute("manufacturers", manufacturerService.findAll());
+            model.addAttribute("categories", categoryService.findAll());
+            return "product/product_add";
+        }
+
+        productService.save(product, file);
         return "redirect:/product/findAll";
 
 
@@ -96,17 +112,30 @@ public class ProductController {
 // Обновление продукта
     @PostMapping("/{id}/edit")
     public String update(@PathVariable Long id,
-                         @ModelAttribute Product product,
+                         @Valid @ModelAttribute Product product,
+                         BindingResult result,
                          @RequestParam Long manufacturerId,
                          @RequestParam Long categoryId,
-                         @RequestParam("file") MultipartFile file) throws IOException {
+                         @RequestParam("file") MultipartFile file, Model model) throws IOException {
 
+        if (manufacturerId == null) {
+            result.rejectValue("manufacturer", "NotNull", "Выберите производителя");
+        }
+        if (categoryId == null) {
+            result.rejectValue("category", "NotNull", "Выберите категорию");
+        }
 
-        // Обновляем производителя и категорию
-        Manufacturer manufacturer = manufacturerService.findById(manufacturerId);
-        Category category = categoryService.findById(categoryId);
+        product.setManufacturer(manufacturerService.findById(manufacturerId));
+        product.setCategory(categoryService.findById(categoryId));
 
-        productService.update(id, product, manufacturer, category, file);
+        if (result.hasErrors()) {
+            model.addAttribute("product", product);
+            model.addAttribute("manufacturers", manufacturerService.findAll());
+            model.addAttribute("categories", categoryService.findAll());
+            return "product/product_edit";
+        }
+
+        productService.update(id, product, file);
         return "redirect:/product/findAll";
     }
 

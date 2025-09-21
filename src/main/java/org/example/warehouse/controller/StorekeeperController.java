@@ -1,5 +1,6 @@
 package org.example.warehouse.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.warehouse.entity.Storekeeper;
 import org.example.warehouse.entity.Warehouse;
@@ -48,7 +49,7 @@ public class StorekeeperController {
     }
 
     @PostMapping("/add")
-    public String addManufacturer(@ModelAttribute Storekeeper storekeeper, BindingResult result) {
+    public String addManufacturer(@Valid @ModelAttribute Storekeeper storekeeper, BindingResult result) {
         if (result.hasErrors()) {
             return "/storekeeper/storekeeper_add";
         }
@@ -66,7 +67,10 @@ public class StorekeeperController {
 
     // Обновление (PUT)
     @PostMapping("/{id}/edit")
-    public String update(@PathVariable Long id, @ModelAttribute Storekeeper storekeeper) {
+    public String update(@PathVariable Long id, @Valid @ModelAttribute Storekeeper storekeeper, BindingResult result) {
+        if (result.hasErrors()) {
+            return "/storekeeper/storekeeper_edit";
+        }
         storekeeperService.update(id, storekeeper);
         return "redirect:/storekeeper/findAll";
     }

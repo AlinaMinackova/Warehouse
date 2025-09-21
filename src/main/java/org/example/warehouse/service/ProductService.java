@@ -72,9 +72,7 @@ public class ProductService {
     }
 
     @Transactional()
-    public void save(Product product, Manufacturer manufacturer, Category category, MultipartFile file) throws IOException {
-        product.setManufacturer(manufacturer);
-        product.setCategory(category);
+    public void save(Product product, MultipartFile file) throws IOException {
         if (!file.isEmpty()) {
             // Сохраняем путь для Thymeleaf
             product.setImageUrl(uploadImage(file));
@@ -92,7 +90,7 @@ public class ProductService {
     }
 
     @Transactional()
-    public Product update(Long id, Product product, Manufacturer manufacturer, Category category, MultipartFile file) throws IOException {
+    public Product update(Long id, Product product, MultipartFile file) throws IOException {
         Product existingProduct = findById(id);
 
         // Обновляем базовые поля
@@ -100,8 +98,6 @@ public class ProductService {
         existingProduct.setLifeDays(product.getLifeDays());
         existingProduct.setWeight(product.getWeight());
         existingProduct.setComposition(product.getComposition());
-        existingProduct.setManufacturer(manufacturer);
-        existingProduct.setCategory(category);
         // Если выбран новый файл, обновляем картинку
         if (!file.isEmpty()) {
             existingProduct.setImageUrl(uploadImage(file));

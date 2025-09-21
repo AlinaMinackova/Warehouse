@@ -17,8 +17,11 @@
                     <option value="" disabled selected>Выберите склад</option>
                     <option th:each="w : ${warehouses}"
                             th:value="${w.id}"
-                            th:text="${w.name}"></option>
+                            th:text="${w.name}"
+                            th:selected="${stock.warehouse != null and stock.warehouse.id == w.id}">
+                    </option>
                 </select>
+                <div class="text-danger" th:if="${#fields.hasErrors('warehouse')}" th:errors="*{warehouse}"></div>
             </div>
 
             <!-- Продукт -->
@@ -28,20 +31,24 @@
                     <option value="" disabled selected>Выберите продукт</option>
                     <option th:each="p : ${products}"
                             th:value="${p.id}"
-                            th:text="${p.name}"></option>
+                            th:text="${p.name}"
+                            th:selected="${stock.product != null and stock.product.id == p.id}"></option>
                 </select>
+                <div class="text-danger" th:if="${#fields.hasErrors('product')}" th:errors="*{product}"></div>
             </div>
 
             <!-- Количество -->
             <div class="mb-3">
                 <label class="form-label">Количество <span class="text-danger">*</span></label>
-                <input type="number" class="form-control" th:field="*{quantity}" min="1" required/>
+                <input type="number" class="form-control" th:field="*{quantity}"/>
+                <div class="text-danger" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></div>
             </div>
 
             <!-- Дата прихода -->
             <div class="mb-3">
                 <label class="form-label">Дата и время прихода <span class="text-danger">*</span></label>
-                <input type="datetime-local" class="form-control" name="arrivalDate">
+                <input type="datetime-local" class="form-control" th:field="*{arrivalDate}">
+                <div class="text-danger" th:if="${#fields.hasErrors('arrivalDate')}" th:errors="*{arrivalDate}"></div>
             </div>
 
             <!-- Кладовщик -->
@@ -51,9 +58,11 @@
                     <option value="" disabled selected>Выберите кладовщика</option>
                     <option th:each="s : ${storekeepers}"
                             th:value="${s.id}"
-                            th:text="${s.lastName + ' ' + s.firstName + ' ' + (s.middleName != null ? s.middleName : '')}">
+                            th:text="${s.lastName + ' ' + s.firstName + ' ' + (s.middleName != null ? s.middleName : '')}"
+                            th:selected="${stock.storekeeper != null and stock.storekeeper.id == s.id}">
                     </option>
                 </select>
+                <div class="text-danger" th:if="${#fields.hasErrors('storekeeper')}" th:errors="*{storekeeper}"></div>
             </div>
 
             <div class="text-center">

@@ -18,18 +18,21 @@
       <div class="mb-3">
         <label class="form-label">Название <span class="text-danger">*</span></label>
         <input type="text" class="form-control" th:field="*{name}">
+        <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
       </div>
 
       <!-- Страна -->
       <div class="mb-3">
         <label class="form-label">Страна <span class="text-danger">*</span></label>
         <input type="text" class="form-control" th:field="*{country}">
+        <div class="text-danger" th:if="${#fields.hasErrors('country')}" th:errors="*{country}"></div>
       </div>
 
       <!-- Email -->
       <div class="mb-3">
         <label class="form-label">Email <span class="text-danger">*</span></label>
-        <input type="email" class="form-control" th:field="*{email}">
+        <input type="text" class="form-control" th:field="*{email}">
+        <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
       </div>
 
       <!-- Кнопка -->

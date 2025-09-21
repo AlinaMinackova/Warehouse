@@ -14,6 +14,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Название категории обязательно")
+    @Size(max = 100, message = "Название категории не должно превышать 100 символов")
     @Column(nullable = false, unique = true, length = 100)
     private String name;
 }

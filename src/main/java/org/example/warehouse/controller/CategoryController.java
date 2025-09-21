@@ -1,5 +1,6 @@
 package org.example.warehouse.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.example.warehouse.entity.Category;
 import org.example.warehouse.entity.Warehouse;
@@ -43,16 +44,17 @@ public class CategoryController {
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("category", new Category());
-        return "/category/category_add"; // Название твоего HTML шаблона
+        return "/category/category_add";
     }
 
     @PostMapping("/add")
-    public String addCategory(@ModelAttribute Category category, BindingResult result) {
+    public String addCategory(@Valid @ModelAttribute Category category,
+                              BindingResult result) {
         if (result.hasErrors()) {
             return "/category/category_add";
         }
         categoryService.save(category);
-        return "redirect:/category/findAll"; // Перенаправление на список производителей
+        return "redirect:/category/findAll";
     }
 
     // Форма редактирования
@@ -60,12 +62,17 @@ public class CategoryController {
     public String editForm(@PathVariable Long id, Model model) {
         Category category = categoryService.findById(id);
         model.addAttribute("category", category);
-        return "/category/category_edit"; // тот же шаблон
+        return "/category/category_edit";
     }
 
-    // Обновление (PUT)
+    // Обновление
     @PostMapping("/{id}/edit")
-    public String update(@PathVariable Long id, @ModelAttribute Category category) {
+    public String update(@PathVariable Long id,
+                         @Valid @ModelAttribute Category category,
+                         BindingResult result) {
+        if (result.hasErrors()) {
+            return "/category/category_edit";
+        }
         categoryService.update(id, category);
         return "redirect:/category/findAll";
     }

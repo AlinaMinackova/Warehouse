@@ -2,6 +2,8 @@ package org.example.warehouse.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,10 +28,13 @@ public class Stock {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Positive
+    @NotNull(message = "Количество обязательно")
+    @Positive(message = "Количество должно быть больше 0")
     @Column(nullable = false)
     private Integer quantity;
 
+    @NotNull(message = "Дата прихода обязательна")
+    @PastOrPresent(message = "Дата прихода не может быть в будущем")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "arrival_date", nullable = false)
     private LocalDateTime arrivalDate = LocalDateTime.now();

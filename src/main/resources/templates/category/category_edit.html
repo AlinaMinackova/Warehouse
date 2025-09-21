@@ -3,21 +3,21 @@
 <head th:replace="~{fragments/header :: head}"></head>
 <body>
 
-<!-- 🔹 Навбар -->
 <div th:replace="~{fragments/header :: body}"></div>
+
 <div class="container flex-grow-1 mt-4">
   <h2 class="text-center mb-4">РЕДАКТИРОВАТЬ КАТЕГОРИЮ</h2>
 
   <div class="form-container">
-    <form th:action="@{'/category/' + ${category.id} + '/edit'}" th:object="${category}"
-          method="post">
-      <!-- скрытое поле для "обмана" браузера -->
+    <form th:action="@{'/category/' + ${category.id} + '/edit'}" th:object="${category}" method="post">
+      <!-- скрытое поле для PUT -->
       <input type="hidden" name="_method" value="put"/>
 
       <!-- Название -->
       <div class="mb-3">
         <label class="form-label">Название <span class="text-danger">*</span></label>
         <input type="text" class="form-control" th:field="*{name}">
+        <div class="text-danger"  th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
       </div>
 
       <!-- Кнопка -->
@@ -27,6 +27,7 @@
     </form>
   </div>
 </div>
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
