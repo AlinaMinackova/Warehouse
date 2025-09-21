@@ -73,6 +73,9 @@ public class ProductService {
 
     @Transactional()
     public void save(Product product, MultipartFile file) throws IOException {
+        if (productRepository.findByName(product.getName()).isPresent()) {
+            throw new IllegalArgumentException("Продукт с таким названием уже существует");
+        }
         if (!file.isEmpty()) {
             // Сохраняем путь для Thymeleaf
             product.setImageUrl(uploadImage(file));
@@ -92,7 +95,11 @@ public class ProductService {
     @Transactional()
     public Product update(Long id, Product product, MultipartFile file) throws IOException {
         Product existingProduct = findById(id);
-
+        productRepository.findByName(product.getName())
+                .filter(m -> !m.getId().equals(id))
+                .ifPresent(m -> {
+                    throw new IllegalArgumentException("Продукт с таким названием уже существует");
+                });
         // Обновляем базовые поля
         existingProduct.setName(product.getName());
         existingProduct.setLifeDays(product.getLifeDays());

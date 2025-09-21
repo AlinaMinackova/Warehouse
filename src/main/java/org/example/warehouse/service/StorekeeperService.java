@@ -21,6 +21,9 @@ public class StorekeeperService {
 
     @Transactional()
     public void save(Storekeeper storekeeper) {
+        if (storekeeperRepository.findByEmail(storekeeper.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Человек с таким email уже существует");
+        }
         storekeeperRepository.save(storekeeper);
     }
 
@@ -50,6 +53,11 @@ public class StorekeeperService {
     @Transactional()
     public Storekeeper update(Long id, Storekeeper updated) {
         Storekeeper existing = findById(id);
+        storekeeperRepository.findByEmail(updated.getEmail())
+                .filter(s -> !s.getId().equals(id))
+                .ifPresent(m -> {
+                    throw new IllegalArgumentException("Человек с таким email уже существует");
+                });
         existing.setLastName(updated.getLastName());
         existing.setFirstName(updated.getFirstName());
         existing.setMiddleName(updated.getMiddleName());

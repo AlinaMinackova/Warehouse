@@ -50,7 +50,14 @@ public class ManufacturerController {
         if (result.hasErrors()) {
             return "/manufacturer/manufacturer_add";
         }
-        manufacturerService.save(manufacturer);
+
+        try {
+            manufacturerService.save(manufacturer);
+        } catch (IllegalArgumentException e) {
+            result.rejectValue("name", "error.manufacturer", e.getMessage());
+            return "/manufacturer/manufacturer_add";
+        }
+
         return "redirect:/manufacturer/findAll"; // Перенаправление на список производителей
     }
 
@@ -68,7 +75,12 @@ public class ManufacturerController {
         if (result.hasErrors()) {
             return "/manufacturer/manufacturer_edit";
         }
-        manufacturerService.update(id, manufacturer);
+        try {
+            manufacturerService.update(id, manufacturer);
+        } catch (IllegalArgumentException e) {
+            result.rejectValue("name", "error.manufacturer", e.getMessage());
+            return "/manufacturer/manufacturer_edit";
+        }
         return "redirect:/manufacturer/findAll";
     }
 

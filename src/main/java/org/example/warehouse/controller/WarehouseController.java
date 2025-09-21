@@ -52,7 +52,12 @@ public class WarehouseController {
         if (result.hasErrors()) {
             return "/warehouse/warehouse_add";
         }
-        warehouseService.save(warehouse);
+        try {
+            warehouseService.save(warehouse);
+        } catch (IllegalArgumentException e) {
+            result.rejectValue("address", "error.warehouse", e.getMessage());
+            return "/warehouse/warehouse_add";
+        }
         return "redirect:/warehouse/findAll"; // Перенаправление на список производителей
     }
 
@@ -70,7 +75,12 @@ public class WarehouseController {
         if (result.hasErrors()) {
             return "/warehouse/warehouse_edit";
         }
-        warehouseService.update(id, warehouse);
+        try {
+            warehouseService.update(id, warehouse);
+        } catch (IllegalArgumentException e) {
+            result.rejectValue("address", "error.warehouse", e.getMessage());
+            return "/warehouse/warehouse_edit";
+        }
         return "redirect:/warehouse/findAll";
     }
 

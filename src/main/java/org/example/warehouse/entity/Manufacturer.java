@@ -17,7 +17,7 @@ public class Manufacturer {
 
     @NotBlank(message = "Название производителя обязательно")
     @Size(max = 255, message = "Название производителя не должно превышать 255 символов")
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, unique = true, length = 255)
     private String name;
 
     @NotBlank(message = "Название страны обязателено")
@@ -28,6 +28,37 @@ public class Manufacturer {
     @NotBlank(message = "Email обязателен")
     @Email(message = "Введите корректный email")
     @Size(max = 255, message = "Email не должен превышать 255 символов")
-    @Column(unique = true, nullable = false, length = 255)
+    @Column(nullable = false, length = 255)
     private String email;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//@Table(
+//        name = "manufacturer",
+//        uniqueConstraints = {
+//                @UniqueConstraint(
+//                        columnNames = {"name", "email"}
+//                )
+//        }
+//)

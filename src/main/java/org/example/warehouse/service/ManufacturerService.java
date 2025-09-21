@@ -40,6 +40,9 @@ public class ManufacturerService {
 
     @Transactional()
     public void save(Manufacturer manufacturer) {
+        if (manufacturerRepository.findByName(manufacturer.getName()).isPresent()) {
+            throw new IllegalArgumentException("Производитель с таким названием уже существует");
+        }
         manufacturerRepository.save(manufacturer);
     }
 
@@ -51,6 +54,11 @@ public class ManufacturerService {
     @Transactional()
     public Manufacturer update(Long id, Manufacturer updated) {
         Manufacturer existing = findById(id);
+        manufacturerRepository.findByName(updated.getName())
+                .filter(m -> !m.getId().equals(id))
+                .ifPresent(m -> {
+                    throw new IllegalArgumentException("Производитель с таким названием уже существует");
+                });
         existing.setName(updated.getName());
         existing.setCountry(updated.getCountry());
         existing.setEmail(updated.getEmail());

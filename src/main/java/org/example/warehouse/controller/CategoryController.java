@@ -53,7 +53,13 @@ public class CategoryController {
         if (result.hasErrors()) {
             return "/category/category_add";
         }
-        categoryService.save(category);
+
+        try {
+            categoryService.save(category);
+        } catch (IllegalArgumentException e) {
+            result.rejectValue("name", "error.category", e.getMessage());
+            return "category/category_add";
+        }
         return "redirect:/category/findAll";
     }
 
@@ -73,7 +79,12 @@ public class CategoryController {
         if (result.hasErrors()) {
             return "/category/category_edit";
         }
-        categoryService.update(id, category);
+        try {
+            categoryService.update(id, category);
+        } catch (IllegalArgumentException e) {
+            result.rejectValue("name", "error.category", e.getMessage());
+            return "category/category_edit";
+        }
         return "redirect:/category/findAll";
     }
 

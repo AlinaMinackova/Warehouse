@@ -20,6 +20,9 @@ public class WarehouseService {
 
     @Transactional()
     public void save(Warehouse warehouse) {
+        if (warehouseRepository.findByAddress(warehouse.getAddress()).isPresent()) {
+            throw new IllegalArgumentException("Склад с таким адресом уже существует");
+        }
         warehouseRepository.save(warehouse);
     }
 
@@ -47,6 +50,11 @@ public class WarehouseService {
     @Transactional()
     public Warehouse update(Long id, Warehouse updated) {
         Warehouse existing = findById(id);
+        warehouseRepository.findByAddress(updated.getAddress())
+                .filter(w -> !w.getId().equals(id))
+                .ifPresent(m -> {
+                    throw new IllegalArgumentException("Склад с таким адресом уже существует");
+                });
         existing.setName(updated.getName());
         existing.setAddress(updated.getAddress());
         return warehouseRepository.save(existing);

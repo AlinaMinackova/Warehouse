@@ -16,7 +16,7 @@ public class Product {
 
     @NotBlank(message = "Название продукта обязательно")
     @Size(max = 255, message = "Название продукта не должно превышать 255 символов")
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false, unique = true, length = 255)
     private String name;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

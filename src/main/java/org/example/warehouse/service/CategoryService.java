@@ -21,6 +21,9 @@ public class CategoryService {
 
     @Transactional()
     public void save(Category category) {
+        if (categoryRepository.findByName(category.getName()).isPresent()) {
+            throw new IllegalArgumentException("Категория с таким названием уже существует");
+        }
         categoryRepository.save(category);
     }
 
@@ -48,6 +51,11 @@ public class CategoryService {
     @Transactional()
     public Category update(Long id, Category updated) {
         Category existing = findById(id);
+        categoryRepository.findByName(updated.getName())
+                .filter(c -> !c.getId().equals(id))
+                .ifPresent(c -> {
+                    throw new IllegalArgumentException("Категория с таким названием уже существует");
+                });
         existing.setName(updated.getName());
         return categoryRepository.save(existing);
     }

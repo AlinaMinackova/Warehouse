@@ -53,7 +53,12 @@ public class StorekeeperController {
         if (result.hasErrors()) {
             return "/storekeeper/storekeeper_add";
         }
-        storekeeperService.save(storekeeper);
+        try {
+            storekeeperService.save(storekeeper);
+        } catch (IllegalArgumentException e) {
+            result.rejectValue("email", "error.storekeeper", e.getMessage());
+            return "/storekeeper/storekeeper_add";
+        }
         return "redirect:/storekeeper/findAll"; // Перенаправление на список производителей
     }
 
@@ -71,7 +76,12 @@ public class StorekeeperController {
         if (result.hasErrors()) {
             return "/storekeeper/storekeeper_edit";
         }
-        storekeeperService.update(id, storekeeper);
+        try {
+            storekeeperService.update(id, storekeeper);
+        } catch (IllegalArgumentException e) {
+            result.rejectValue("email", "error.storekeeper", e.getMessage());
+            return "/storekeeper/storekeeper_edit";
+        }
         return "redirect:/storekeeper/findAll";
     }
 

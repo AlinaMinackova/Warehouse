@@ -19,11 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Objects;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/product")
@@ -92,9 +87,16 @@ public class ProductController {
             return "product/product_add";
         }
 
-        productService.save(product, file);
+        try {
+            productService.save(product, file);
+        } catch (IllegalArgumentException e) {
+            result.rejectValue("name", "error.product", e.getMessage());
+            model.addAttribute("product", product);
+            model.addAttribute("manufacturers", manufacturerService.findAll());
+            model.addAttribute("categories", categoryService.findAll());
+            return "product/product_add";
+        }
         return "redirect:/product/findAll";
-
 
     }
 
@@ -127,6 +129,8 @@ public class ProductController {
 
         product.setManufacturer(manufacturerService.findById(manufacturerId));
         product.setCategory(categoryService.findById(categoryId));
+        Product existing = productService.findById(id);
+        product.setImageUrl(existing.getImageUrl());
 
         if (result.hasErrors()) {
             model.addAttribute("product", product);
@@ -134,8 +138,17 @@ public class ProductController {
             model.addAttribute("categories", categoryService.findAll());
             return "product/product_edit";
         }
+        try {
+            productService.update(id, product, file);
+        } catch (IllegalArgumentException e) {
+            result.rejectValue("name", "error.product", e.getMessage());
+            model.addAttribute("product", product);
+            model.addAttribute("manufacturers", manufacturerService.findAll());
+            model.addAttribute("categories", categoryService.findAll());
 
-        productService.update(id, product, file);
+            return "product/product_edit";
+        }
+
         return "redirect:/product/findAll";
     }
 
