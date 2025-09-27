@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -38,6 +39,7 @@ public class CategoryController {
         model.addAttribute("categories", categoryPage.getContent());
         model.addAttribute("pag", categoryPage);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("size", categoryPage.getTotalElements());
         return "category/category_list";
     }
 

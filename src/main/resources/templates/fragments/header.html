@@ -14,48 +14,19 @@
 <div class="header container-fluid">
     <div class="container">
         <div class="row g-2 mb-3">
-            <!-- СКЛАДЫ -->
+            <!-- МЕНЮ -->
             <div class="col-3 dropdown">
-                <button class="btn btn-light btn-custom dropdown-toggle" type="button" id="dropdownWarehouses" data-bs-toggle="dropdown" aria-expanded="false">
-                    СКЛАДЫ
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownWarehouses">
-                    <li><a class="dropdown-item" th:href="@{/warehouse/findAll}">Список складов</a></li>
-                    <li><a class="dropdown-item" th:href="@{/warehouse/add}">Добавить склад</a></li>
-                </ul>
-            </div>
-            <!-- ПРОДУКЦИЯ -->
-            <div class="col-3 dropdown">
-                <button class="btn btn-light btn-custom dropdown-toggle" type="button" id="dropdownProducts" data-bs-toggle="dropdown" aria-expanded="false">
-                    ПРОДУКЦИЯ
+                <button class="btn btn-light btn-custom dropdown-toggle" type="button" id="dropdownMenu" data-bs-toggle="dropdown" aria-expanded="false">
+                    МЕНЮ
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownProducts">
-                    <li><a class="dropdown-item" th:href="@{/product/findAll}">Список продукции</a></li>
-                    <li><a class="dropdown-item" th:href="@{/product/add}">Добавить продукцию</a></li>
-                    <li><a class="dropdown-item" th:href="@{/category/findAll}">Список категорий</a></li>
-                    <li><a class="dropdown-item" th:href="@{/category/add}">Добавить категорию</a></li>
-                </ul>
-            </div>
-            <!-- ПРОИЗВОДИТЕЛИ -->
-            <div class="col-3 dropdown">
-                <button class="btn btn-light btn-custom dropdown-toggle" type="button" id="dropdownManufacturers" data-bs-toggle="dropdown" aria-expanded="false">
-                    ПРОИЗВОДИТЕЛИ
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownManufacturers">
-                    <a class="dropdown-item" th:href="@{/manufacturer/findAll}">Список производителей</a>
-                    <li><a class="dropdown-item" th:href="@{/manufacturer/add}">Добавить производителя</a></li>
-                </ul>
-            </div>
-            <!-- ПЕРСОНАЛ -->
-            <div class="col-3 dropdown">
-                <button class="btn btn-light btn-custom dropdown-toggle" type="button" id="dropdownStaff" data-bs-toggle="dropdown" aria-expanded="false">
-                    ПОСТУПЛЕНИЯ
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownStaff">
-                    <li><a class="dropdown-item" th:href="@{/stock/findAll}">Посмотреть поступления</a></li>
-                    <li><a class="dropdown-item" th:href="@{/stock/add}">Добавить поступление</a></li>
-                    <li><a class="dropdown-item" th:href="@{/storekeeper/findAll}">Посмотреть персонал</a></li>
-                    <li><a class="dropdown-item" th:href="@{/storekeeper/add}">Добавить персонал</a></li>
+                    <li><a class="dropdown-item" th:href="@{/warehouse/findAll}">Склады</a></li>
+                    <li><a class="dropdown-item" th:href="@{/product/findAll}">Продукция</a></li>
+                    <li><a class="dropdown-item" th:href="@{/category/findAll}">Категории</a></li>
+                    <li><a class="dropdown-item" th:href="@{/manufacturer/findAll}">Производители</a></li>
+                    <li><a class="dropdown-item" th:href="@{/stock/findAll}">Поступления</a></li>
+                    <li><a class="dropdown-item" th:href="@{/storekeeper/findAll}">Персонал</a></li>
+
                 </ul>
             </div>
         </div>

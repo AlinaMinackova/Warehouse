@@ -11,6 +11,13 @@
 
     <h2 class="text-center mb-4">СПИСОК ПРОДУКТОВ</h2>
 
+    <div class="text-center mt-5 mb-5">
+        <a th:href="@{/product/add}"
+           class="btn-submit text-decoration-none">
+            Добавить продукт
+        </a>
+    </div>
+
     <form method="get" th:action="@{/product/findAll}" class="d-flex mb-4">
         <!-- Производитель -->
         <select name="manufacturerId" class="form-select me-2">
@@ -34,6 +41,10 @@
 
         <button type="submit" class="btn btn-secondary">НАЙТИ</button>
     </form>
+
+    <div class="row">
+        <p><b>Продуктов:</b> <span th:text="${size}">10</span></p>
+    </div>
 
     <div class="row">
         <div class="col-md-3 mb-4" th:each="product : ${products}">
@@ -100,10 +111,6 @@
                     <a th:href="@{/product/{id}/edit(id=${product.id})}"
                        class="btn btn-outline-dark btn-sm me-2">
                         РЕДАКТИРОВАТЬ
-                    </a>
-                    <a th:href="@{/product/{id}/delete(id=${product.id})}"
-                       class="btn btn-outline-dark btn-sm me-2">
-                        УДАЛИТЬ
                     </a>
                 </div>
             </div>

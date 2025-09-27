@@ -3,13 +3,20 @@
 <head th:replace="~{fragments/header :: head}"></head>
 <body>
 
-<!-- 🔹 Навбар -->
+<!-- Навбар -->
 <div th:replace="~{fragments/header :: body}"></div>
 
 <!-- Основной контейнер -->
 <div class="container flex-grow-1 mt-4">
 
-    <h2 class="text-center mb-4">СПИСОК ПЕРСОНАЛА</h2>
+    <h2 class="text-center mb-4">СПИСОК КЛАДОВЩИКОВ</h2>
+
+    <div class="text-center mt-5 mb-5">
+        <a th:href="@{/storekeeper/add}"
+           class="btn-submit text-decoration-none">
+            Добавить персонал
+        </a>
+    </div>
 
     <form class="d-flex mb-4" th:action="@{/storekeeper/findAll}" method="get">
         <input class="form-control me-2" type="search" name="keyword"
@@ -17,6 +24,10 @@
                th:value="${keyword}">
         <button class="btn btn-secondary" type="submit">НАЙТИ</button>
     </form>
+
+    <div class="row">
+        <p><b>Кладовщиков:</b> <span th:text="${size}">10</span></p>
+    </div>
 
     <table class="table table-striped">
         <thead>
@@ -40,10 +51,6 @@
                 <a th:href="@{/storekeeper/{id}/edit(id=${storekeeper.id})}"
                    class="btn btn-outline-dark btn-sm me-2">
                     РЕДАКТИРОВАТЬ
-                </a>
-                <a th:href="@{/storekeeper/{id}/delete(id=${storekeeper.id})}"
-                   class="btn btn-outline-dark btn-sm me-2">
-                    УДАЛИТЬ
                 </a>
             </td>
         </tr>

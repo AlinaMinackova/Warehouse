@@ -29,7 +29,7 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public Page<Category> findAll(int page, int size) {
-        return categoryRepository.findAll(PageRequest.of(page, size));
+        return categoryRepository.findAllByOrderByNameAsc(PageRequest.of(page, size));
     }
 
     @Transactional(readOnly = true)
@@ -40,7 +40,7 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public List<Category> findAll() {
-        return categoryRepository.findAll();
+        return categoryRepository.findAllByOrderByNameAsc();
     }
 
     @Transactional(readOnly = true)

@@ -50,6 +50,8 @@ public class ProductController {
         model.addAttribute("selectedManufacturer", manufacturerId);
         model.addAttribute("selectedCategory", categoryId);
 
+        model.addAttribute("size", productPage.getTotalElements());
+
         return "product/product_list";
     }
 
@@ -80,23 +82,20 @@ public class ProductController {
         product.setManufacturer(manufacturerService.findById(manufacturerId));
         product.setCategory(categoryService.findById(categoryId));
 
-        if (result.hasErrors()) {
-            model.addAttribute("product", product);
-            model.addAttribute("manufacturers", manufacturerService.findAll());
-            model.addAttribute("categories", categoryService.findAll());
-            return "product/product_add";
-        }
-
         try {
-            productService.save(product, file);
+            if (!result.hasErrors()) {
+                productService.save(product, file);
+                return "redirect:/product/findAll";
+            }
         } catch (IllegalArgumentException e) {
             result.rejectValue("name", "error.product", e.getMessage());
-            model.addAttribute("product", product);
-            model.addAttribute("manufacturers", manufacturerService.findAll());
-            model.addAttribute("categories", categoryService.findAll());
-            return "product/product_add";
         }
-        return "redirect:/product/findAll";
+
+        model.addAttribute("product", product);
+        model.addAttribute("manufacturers", manufacturerService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
+
+        return "product/product_add";
 
     }
 
@@ -120,36 +119,25 @@ public class ProductController {
                          @RequestParam Long categoryId,
                          @RequestParam("file") MultipartFile file, Model model) throws IOException {
 
-        if (manufacturerId == null) {
-            result.rejectValue("manufacturer", "NotNull", "Выберите производителя");
-        }
-        if (categoryId == null) {
-            result.rejectValue("category", "NotNull", "Выберите категорию");
-        }
-
         product.setManufacturer(manufacturerService.findById(manufacturerId));
         product.setCategory(categoryService.findById(categoryId));
         Product existing = productService.findById(id);
         product.setImageUrl(existing.getImageUrl());
 
-        if (result.hasErrors()) {
-            model.addAttribute("product", product);
-            model.addAttribute("manufacturers", manufacturerService.findAll());
-            model.addAttribute("categories", categoryService.findAll());
-            return "product/product_edit";
-        }
         try {
-            productService.update(id, product, file);
+            if (!result.hasErrors()) {
+                productService.update(id, product, file);
+                return "redirect:/product/findAll";
+            }
         } catch (IllegalArgumentException e) {
             result.rejectValue("name", "error.product", e.getMessage());
-            model.addAttribute("product", product);
-            model.addAttribute("manufacturers", manufacturerService.findAll());
-            model.addAttribute("categories", categoryService.findAll());
-
-            return "product/product_edit";
         }
 
-        return "redirect:/product/findAll";
+        model.addAttribute("product", product);
+        model.addAttribute("manufacturers", manufacturerService.findAll());
+        model.addAttribute("categories", categoryService.findAll());
+
+        return "product/product_edit";
     }
 
     // удаление

@@ -38,10 +38,65 @@
       <!-- Кнопка -->
       <div class="text-center">
         <button type="submit" class="btn-submit">Обновить</button>
+<!--        <a th:href="@{/manufacturer/{id}/delete(id=${manufacturer.id})}"-->
+<!--           class="btn-submit">-->
+<!--          Удалить-->
+<!--        </a>-->
+        <button type="button"
+                class="btn-submit"
+                data-bs-toggle="modal"
+                data-bs-target="#confirmDeleteModal"
+                th:data-id="${manufacturer.id}"
+                th:data-name="${manufacturer.name}">
+          Удалить
+        </button>
       </div>
     </form>
   </div>
 </div>
+
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Подтверждение удаления</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+      </div>
+      <div class="modal-body">
+        Вы уверены, что хотите удалить производителя <strong id="deleteItemName">...</strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+        <form id="deleteForm" method="get">
+          <input type="hidden" name="_method" value="delete"/>
+          <button type="submit" class="btn btn-danger">Удалить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Скрипт для подстановки id -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const deleteModal = document.getElementById("confirmDeleteModal");
+    const deleteForm = document.getElementById("deleteForm");
+    const deleteItemName = document.getElementById("deleteItemName");
+
+    deleteModal.addEventListener("show.bs.modal", event => {
+      const button = event.relatedTarget;
+      const id = button.getAttribute("data-id");
+      const name = button.getAttribute("data-name");
+
+      // Подставляем название
+      deleteItemName.textContent = name;
+
+      // Формируем action
+      deleteForm.action = "/manufacturer/" + id + "/delete";
+    });
+  });
+</script>
+
 <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

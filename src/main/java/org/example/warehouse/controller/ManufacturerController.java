@@ -36,6 +36,7 @@ public class ManufacturerController {
         model.addAttribute("manufacturers", manufacturerPage.getContent());
         model.addAttribute("pag", manufacturerPage);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("size", manufacturerPage.getTotalElements());
         return "manufacturer/manufacturer_list";
     }
 

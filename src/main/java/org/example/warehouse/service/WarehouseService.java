@@ -28,12 +28,12 @@ public class WarehouseService {
 
     @Transactional(readOnly = true)
     public Page<Warehouse> findAll(int page, int size) {
-        return warehouseRepository.findAll(PageRequest.of(page, size));
+        return warehouseRepository.findAllByOrderByNameAsc(PageRequest.of(page, size));
     }
 
     @Transactional(readOnly = true)
     public List<Warehouse> findAll() {
-        return warehouseRepository.findAll();
+        return warehouseRepository.findAllByOrderByNameAsc();
     }
 
     @Transactional(readOnly = true)

@@ -13,11 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping("/stock")
@@ -51,6 +46,8 @@ public class StockController {
         model.addAttribute("selectedWarehouse", warehouseId);
         model.addAttribute("selectedProduct", productId);
         model.addAttribute("selectedSort", sort);
+
+        model.addAttribute("size", stockPage.getTotalElements());
 
 
         return "stock/stock_list";
@@ -124,20 +121,9 @@ public class StockController {
                          @RequestParam Long storekeeperId,
                          Model model) {
 
-        if (warehouseId == null) {
-            result.rejectValue("warehouse", "NotNull", "Выберите склад");
-        }
-        if (productId == null) {
-            result.rejectValue("product", "NotNull", "Выберите продукт");
-        }
-        if (storekeeperId == null) {
-            result.rejectValue("storekeeper", "NotNull", "Выберите кладовщика");
-        }
-
         stock.setWarehouse(warehouseService.findById(warehouseId));
         stock.setProduct(productService.findById(productId));
         stock.setStorekeeper(storekeeperService.findById(storekeeperId));
-
 
         if (result.hasErrors()) {
             model.addAttribute("stock", stock);

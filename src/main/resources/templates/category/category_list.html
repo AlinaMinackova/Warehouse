@@ -3,10 +3,17 @@
 <head th:replace="~{fragments/header :: head}"></head>
 <body>
 
-<!-- 🔹 Навбар -->
+<!-- Навбар -->
 <div th:replace="~{fragments/header :: body}"></div>
 <div class="container flex-grow-1 mt-4">
     <h2 class="text-center">КАТЕГОРИИ</h2>
+
+    <div class="text-center mt-5 mb-5">
+        <a th:href="@{/category/add}"
+           class="btn-submit text-decoration-none">
+            Добавить категорию
+        </a>
+    </div>
 
     <!-- Поиск -->
     <form class="d-flex mb-4" th:action="@{/category/findAll}" method="get">
@@ -15,6 +22,10 @@
                th:value="${keyword}">
         <button class="btn btn-secondary" type="submit">НАЙТИ</button>
     </form>
+
+    <div class="row">
+        <p><b>Категорий:</b> <span th:text="${size}">10</span></p>
+    </div>
 
     <!-- Список производителей -->
     <div th:each="category : ${categories}"
@@ -27,13 +38,8 @@
                class="btn btn-outline-dark btn-sm me-2">
                 РЕДАКТИРОВАТЬ
             </a>
-            <a th:href="@{/category/{id}/delete(id=${category.id})}"
-               class="btn btn-outline-dark btn-sm me-2">
-                УДАЛИТЬ
-            </a>
         </div>
     </div>
-
 
     <!-- Пагинация -->
     <nav th:if="${pag != null and pag.totalPages > 1}" aria-label="Page navigation">

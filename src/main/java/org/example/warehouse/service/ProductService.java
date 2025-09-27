@@ -27,12 +27,12 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public Page<Product> findAll(int page, int size) {
-        return productRepository.findAll(PageRequest.of(page, size));
+        return productRepository.findAllByOrderByNameAsc(PageRequest.of(page, size));
     }
 
     @Transactional(readOnly = true)
     public List<Product> findAll() {
-        return productRepository.findAll();
+        return productRepository.findAllByOrderByNameAsc();
     }
 
     @Transactional(readOnly = true)
@@ -77,7 +77,6 @@ public class ProductService {
             throw new IllegalArgumentException("Продукт с таким названием уже существует");
         }
         if (!file.isEmpty()) {
-            // Сохраняем путь для Thymeleaf
             product.setImageUrl(uploadImage(file));
         }
         else {
@@ -105,7 +104,6 @@ public class ProductService {
         existingProduct.setLifeDays(product.getLifeDays());
         existingProduct.setWeight(product.getWeight());
         existingProduct.setComposition(product.getComposition());
-        // Если выбран новый файл, обновляем картинку
         if (!file.isEmpty()) {
             existingProduct.setImageUrl(uploadImage(file));
         }

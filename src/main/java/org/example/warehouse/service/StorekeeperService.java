@@ -29,12 +29,12 @@ public class StorekeeperService {
 
     @Transactional(readOnly = true)
     public Page<Storekeeper> findAll(int page, int size) {
-        return storekeeperRepository.findAll(PageRequest.of(page, size));
+        return storekeeperRepository.findAllByOrderByLastNameAscFirstNameAscMiddleNameAsc(PageRequest.of(page, size));
     }
 
     @Transactional(readOnly = true)
     public List<Storekeeper> findAll() {
-        return storekeeperRepository.findAll();
+        return storekeeperRepository.findAllByOrderByLastNameAscFirstNameAscMiddleNameAsc();
     }
 
     @Transactional(readOnly = true)

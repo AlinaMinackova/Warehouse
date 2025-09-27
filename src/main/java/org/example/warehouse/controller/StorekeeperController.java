@@ -38,6 +38,7 @@ public class StorekeeperController {
         model.addAttribute("storekeepers", storekeeperPage.getContent());
         model.addAttribute("pag", storekeeperPage);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("size", storekeeperPage.getTotalElements());
         return "storekeeper/storekeeper_list";
     }
 

@@ -3,19 +3,29 @@
 <head th:replace="~{fragments/header :: head}"></head>
 <body>
 
-<!-- 🔹 Навбар -->
+<!-- Навбар -->
 <div th:replace="~{fragments/header :: body}"></div>
 <div class="container flex-grow-1 mt-4">
     <h2 class="text-center">СКЛАДЫ</h2>
 
-    <!-- Поиск -->
-    <!-- Поиск -->
+    <div class="text-center mt-5 mb-5">
+        <a th:href="@{/warehouse/add}"
+           class="btn-submit text-decoration-none">
+            Добавить склад
+        </a>
+    </div>
+
     <form class="d-flex mb-4" th:action="@{/warehouse/findAll}" method="get">
         <input class="form-control me-2" type="search" name="keyword"
                placeholder="Поиск по названию или адресу"
                th:value="${keyword}">
         <button class="btn btn-secondary" type="submit">НАЙТИ</button>
     </form>
+
+    <div class="row">
+        <p><b>Складов:</b> <span th:text="${size}">10</span></p>
+    </div>
+
     <table class="table table-striped">
         <thead>
         <tr>
@@ -32,10 +42,6 @@
                 <a th:href="@{/warehouse/{id}/edit(id=${warehouse.id})}"
                    class="btn btn-outline-dark btn-sm me-2">
                     РЕДАКТИРОВАТЬ
-                </a>
-                <a th:href="@{/warehouse/{id}/delete(id=${warehouse.id})}"
-                   class="btn btn-outline-dark btn-sm me-2">
-                    УДАЛИТЬ
                 </a>
                 <a th:href="@{/stock/findAll(warehouseId=${warehouse.id})}"
                    class="btn btn-outline-dark btn-sm me-2">

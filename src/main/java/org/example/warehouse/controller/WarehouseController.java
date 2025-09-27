@@ -37,6 +37,7 @@ public class WarehouseController {
         model.addAttribute("warehouses", warehousesPage.getContent());
         model.addAttribute("pag", warehousesPage);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("size", warehousesPage.getTotalElements());
 
         return "/warehouse/warehouse_list";
     }

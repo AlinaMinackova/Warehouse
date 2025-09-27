@@ -21,7 +21,7 @@ public class ManufacturerService {
 
     @Transactional(readOnly = true)
     public Page<Manufacturer> findAll(int page, int size) {
-        return manufacturerRepository.findAll(PageRequest.of(page, size));
+        return manufacturerRepository.findAllByOrderByNameAsc(PageRequest.of(page, size));
     }
 
     @Transactional(readOnly = true)
@@ -35,7 +35,7 @@ public class ManufacturerService {
 
     @Transactional(readOnly = true)
     public List<Manufacturer> findAll() {
-        return manufacturerRepository.findAll();
+        return manufacturerRepository.findAllByOrderByNameAsc();
     }
 
     @Transactional()
